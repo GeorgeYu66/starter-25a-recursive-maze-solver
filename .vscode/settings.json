@@ -98,4 +98,5 @@
         "fstream": "cpp",
         "iomanip": "cpp"
     },
+    "C_Cpp.errorSquiggles": "disabled",
 }
