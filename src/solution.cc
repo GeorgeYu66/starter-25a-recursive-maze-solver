@@ -10,9 +10,6 @@ std::vector<std::pair<unsigned int, unsigned int>> SolveMaze(
   unsigned int i = start_x;
   unsigned int j = start_y;
   if (SolveMazeRecursive(maze, i, j, path, visited)) {
-    path.push_back(std::make_pair(i, j));
-  };
-  if (maze[i][j] == 'X') {
     return path;
   }
 }
@@ -23,5 +20,54 @@ bool SolveMazeRecursive(
     unsigned int y,
     std::vector<std::pair<unsigned int, unsigned int>>& path,
     std::vector<std::vector<bool>>& visited) {
+  //assume this is on the path
+  path.push_back(std::make_pair(x, y));
+  //base case
+  if (maze[x][y] == 'X') {
+    return true;
+  }
+  if (maze[x][y] == '#') {
+    path.pop_back();
+    visited[x][y] = false;
+    return false;
+  }
+  if (visited[x][y]) {
+    path.pop_back();
+    return false;
+  }
+  visited[x][y] = true;
+  if (!(x + 1 == maze.size())) {
+    if (SolveMazeRecursive(maze, x + 1, y, path, visited)) {
+      return true;
+    } else {
+      path.pop_back();
+      visited[x][y] = false;
+    }
+  }
+  if (!(x == 0)) {
+    if (SolveMazeRecursive(maze, x - 1, y, path, visited)) {
+      return true;
+    } else {
+      path.pop_back();
+      visited[x][y] = false;
+    }
+  }
+  if (!(y + 1 == maze[0].size())) {
+    if (SolveMazeRecursive(maze, x, y + 1, path, visited)) {
+      return true;
+    } else {
+      path.pop_back();
+      visited[x][y] = false;
+    }
+  }
+  if (!(y == 0)) {
+    if (SolveMazeRecursive(maze, x, y - 1, path, visited)) {
+      return true;
+    } else {
+      path.pop_back();
+      visited[x][y] = false;
+    }
+  }
+  //by the prompt, this is never reachable
   return false;
 }
